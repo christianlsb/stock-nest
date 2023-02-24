@@ -1,9 +1,19 @@
 import { Controller, Get } from '@nestjs/common';
+import { PrismaService } from './database/prisma.service';
 
-@Controller('teste')
+@Controller()
 export class AppController {
-  @Get('hello')
-  getHello(): string {
-    return 'Hello World';
+  constructor(private prisma: PrismaService,) {}
+  @Get('products')
+  async getHello() {
+    const crateProduct = await this.prisma.product.create({
+      data: {
+        id: '1',
+        name: 'Banana',
+        function: 'Melhorar as pernas',
+      },
+    });
+
+    return crateProduct;
   }
 }
