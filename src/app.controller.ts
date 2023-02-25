@@ -1,16 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Body } from '@nestjs/common';
 import { PrismaService } from './database/prisma.service';
+import { randomUUID } from 'node:crypto';
+import { CreateProduct } from './dtos/create-product';
 
 @Controller()
 export class AppController {
-  constructor(private prisma: PrismaService,) {}
+  constructor(private prisma: PrismaService) {}
+
   @Get('products')
-  async getHello() {
+  async getHello(@Body() body: CreateProduct) {
+    const {name, function: productFunction} = body;
+
+      console.log(body)
     const crateProduct = await this.prisma.product.create({
       data: {
-        id: '1',
+        id: randomUUID(),
         name: 'Banana',
-        function: 'Melhorar as pernas',
+        function: productFunction,
       },
     });
 
